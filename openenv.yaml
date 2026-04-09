@@ -1,0 +1,63 @@
+---
+title: Email Triage Environment
+emoji: 📧
+colorFrom: blue
+colorTo: green
+sdk: docker
+pinned: false
+app_port: 7860
+base_path: /web
+tags:
+  - openenv
+  - email-triage
+  - customer-support
+  - nlp
+  - real-world
+name: email-triage-env
+version: "1.0.0"
+description: >
+  A realistic email triage environment where an AI agent sorts,
+  prioritizes, and routes customer support emails. Models a task
+  performed by millions of support agents daily.
+author: "OpenEnv Submission"
+tasks:
+  - name: category-identification
+    difficulty: easy
+    description: "Identify the correct category for each email (billing/technical/general/spam)"
+    max_steps: 8
+    success_threshold: 0.7
+  - name: priority-classification
+    difficulty: medium
+    description: "Identify both category and urgency priority for each email"
+    max_steps: 12
+    success_threshold: 0.6
+  - name: full-triage
+    difficulty: hard
+    description: "Complete triage: category, priority, and recommended action"
+    max_steps: 15
+    success_threshold: 0.5
+  - name: adversarial-triage
+    difficulty: expert
+    description: "Full triage with adversarial emails: spam disguised as billing/technical, and legitimate emails that look like spam. Bonus for catching disguised spam, penalty for falling for it."
+    max_steps: 15
+    success_threshold: 0.45
+observation_space:
+  type: object
+  fields:
+    - email_id: string
+    - subject: string
+    - body: string
+    - sender: string
+    - timestamp: string
+    - queue_position: integer
+    - total_in_queue: integer
+    - emails_processed: integer
+    - current_score: float
+action_space:
+  type: object
+  fields:
+    - email_id: string
+    - priority: "enum: critical, high, medium, low"
+    - category: "enum: billing, technical, general, spam"
+    - action: "enum: respond, escalate, archive, delete"
+    - reasoning: string
